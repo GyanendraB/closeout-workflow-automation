@@ -1,0 +1,10 @@
+{
+  "name": "closeout-task-solution",
+  "private": true,
+  "scripts": {
+    "test": "npm --prefix closeout-ai-validation-automation test",
+    "test:ui": "npm --prefix closeout-ai-validation-automation run test:ui",
+    "test:api": "npm --prefix closeout-ai-validation-automation run test:api",
+    "report": "npm --prefix closeout-ai-validation-automation run report"
+  }
+}

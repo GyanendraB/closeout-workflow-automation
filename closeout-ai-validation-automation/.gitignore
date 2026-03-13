@@ -1,0 +1,8 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+reports/playwright-report/
+reports/allure-report/
+reports/allure-results/*
+!reports/allure-results/.gitkeep

@@ -1,0 +1,27 @@
+{
+  "name": "closeout-hardhat-ai-validation-automation",
+  "version": "1.0.0",
+  "description": "Playwright and TypeScript automation framework for Closeout hardhat AI validation.",
+  "author": "Gyan",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "test": "set PWTEST_CACHE_DIR=.pw-cache&& playwright test",
+    "test:ui": "set PWTEST_CACHE_DIR=.pw-cache&& playwright test tests/ui",
+    "test:api": "set PWTEST_CACHE_DIR=.pw-cache&& playwright test tests/api",
+    "report": "playwright show-report reports/playwright-report",
+    "report:allure": "allure serve allure-results",
+    "report:allure:generate": "allure generate allure-results --clean -o reports/allure-report",
+    "clean:test-results": "powershell -NoProfile -Command \"if (Test-Path 'test-results') { Remove-Item -Recurse -Force 'test-results' }\"",
+    "clean:reports": "powershell -NoProfile -Command \"if (Test-Path 'reports') { Remove-Item -Recurse -Force 'reports' }\"",
+    "clean:allure": "powershell -NoProfile -Command \"if (Test-Path 'allure-results') { Remove-Item -Recurse -Force 'allure-results' }; if (Test-Path 'reports/allure-report') { Remove-Item -Recurse -Force 'reports/allure-report' }\"",
+    "clean:pw-cache": "powershell -NoProfile -Command \"if (Test-Path '.pw-cache') { Remove-Item -Recurse -Force '.pw-cache' }\"",
+    "clean:artifacts": "npm run clean:test-results && npm run clean:reports && npm run clean:allure && npm run clean:pw-cache"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@types/node": "^24.3.0",
+    "allure-playwright": "^3.4.1",
+    "typescript": "^5.9.2"
+  }
+}
