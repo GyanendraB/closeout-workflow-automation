@@ -2,6 +2,9 @@ node_modules/
 dist/
 playwright-report/
 test-results/
+.pw-cache/
+allure-results/*
+!allure-results/.gitkeep
 reports/playwright-report/
 reports/allure-report/
 reports/allure-results/*
