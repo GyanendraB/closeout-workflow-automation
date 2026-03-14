@@ -1,9 +1,8 @@
 name: Run Closeout Tests
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 5 * * *'
+  # CI is temporarily disabled. Re-add triggers when you're ready to run in GitHub Actions.
+  workflow_call:
 
 jobs:
   playwright-tests:
