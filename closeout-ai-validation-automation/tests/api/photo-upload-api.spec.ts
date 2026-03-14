@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { env } from "../../src/config/env";
+import { apiTestData } from "../../test-data/payloads/api-test-data";
 
 type AuthResponse = Array<{
   tokens?: Array<{
@@ -28,13 +29,7 @@ type PlaceholderPhoto = {
 };
 
 test("get placeholder photos", async ({ request }) => {
-  const payload = {
-    order: "status_asc",
-    statuses: ["accepted", "rejected", "not-needed", "initial"],
-    locationId: 7920,
-    imageSize: "LARGE",
-    templateId: 119795
-  };
+  const payload = apiTestData.placeholderPhotos.requestPayload;
 
   let accessToken = env.accessToken;
 

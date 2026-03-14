@@ -34,7 +34,7 @@ test.describe("Hardhat AI Validation Reject Folder Flow", () => {
           `Reject folder validation for ${imageFile.fileName} in Test Project ${projectNumber} and Test Site ${siteNumber}`
         );
 
-        await workflowPage.waitForLatestPhotoStatus();
+        await workflowPage.waitForLatestPhotoStatus("rejected");
         const actualStatus = await workflowPage.getLatestPhotoStatus();
         expect.soft(
           actualStatus,

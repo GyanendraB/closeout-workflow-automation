@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { env } from "../../src/config/env";
+import { apiTestData } from "../../test-data/payloads/api-test-data";
 
 type AuthResponse = Array<{
   name?: string;
@@ -24,7 +25,7 @@ test.describe("Login API", () => {
     expect(response.ok()).toBeTruthy();
 
     const body = (await response.json()) as AuthResponse;
-    expect(body[0]?.base_uri).toBeTruthy();
+    expect(body[0]?.base_uri).toBe(apiTestData.login.expectedRegionBaseUri);
     expect(body[0]?.tokens?.[0]?.access_token).toBeTruthy();
   });
 });

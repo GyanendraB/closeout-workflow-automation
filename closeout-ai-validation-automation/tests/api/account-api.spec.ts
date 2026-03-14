@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { env } from "../../src/config/env";
+import { apiTestData } from "../../test-data/payloads/api-test-data";
 
 type AuthResponse = Array<{
   tokens?: Array<{
@@ -60,11 +61,13 @@ test("get user account", async ({ request }) => {
   expect(contentType).toContain("application/json");
 
   const responseBody = JSON.parse(responseBodyText) as AccountResponse;
-  expect(responseBody.id).toBe(1054);
-  expect(responseBody.firstName).toBe("Gyanendra");
-  expect(responseBody.lastName).toBe("Singh");
-  expect(responseBody.searchKey).toBe("gyanendra singh sadev12783@devlug.com");
-  expect(responseBody.email).toBe("sadev12783@devlug.com");
-  expect(responseBody.company?.id).toBe(2);
-  expect(responseBody.company?.name).toBe("Testing only");
+  const { expectedUser } = apiTestData.account;
+
+  expect(responseBody.id).toBe(expectedUser.id);
+  expect(responseBody.firstName).toBe(expectedUser.firstName);
+  expect(responseBody.lastName).toBe(expectedUser.lastName);
+  expect(responseBody.searchKey).toBe(expectedUser.searchKey);
+  expect(responseBody.email).toBe(expectedUser.email);
+  expect(responseBody.company?.id).toBe(expectedUser.company.id);
+  expect(responseBody.company?.name).toBe(expectedUser.company.name);
 });

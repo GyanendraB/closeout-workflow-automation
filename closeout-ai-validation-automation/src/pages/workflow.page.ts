@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { createUniqueUploadCopy } from "../utils/upload-file";
+import { waitFor } from "../utils/waitUtils";
 
 export class WorkflowPage {
   readonly page: Page;
@@ -75,19 +76,41 @@ export class WorkflowPage {
     return this.photoCards.first();
   }
 
-  async waitForLatestPhotoStatus(): Promise<void> {
+  async waitForLatestPhotoStatus(expectedStatus?: "accepted" | "rejected"): Promise<void> {
     console.log("[WorkflowPage] Waiting for latest photo status to resolve");
 
-    for (let attempt = 0; attempt < 40; attempt++) {
+    let lastResolvedStatus: "accepted" | "rejected" | null = null;
+
+    for (let attempt = 0; attempt < 50; attempt++) {
       const status = await this.getLatestPhotoStatus();
-      if (status !== "unknown") {
-        return;
+      if (status === "unknown") {
+        lastResolvedStatus = null;
+        await this.page.waitForTimeout(500);
+        continue;
       }
 
-      await this.page.waitForTimeout(500);
+      if (expectedStatus && status !== expectedStatus) {
+        console.log(`[WorkflowPage] Current status is ${status}; waiting for expected status ${expectedStatus}`);
+        lastResolvedStatus = null;
+        await waitFor(1500);
+        continue;
+      }
+
+      if (status !== lastResolvedStatus) {
+        console.log(`[WorkflowPage] Status changed to ${status}, waiting briefly for it to stabilize`);
+        lastResolvedStatus = status;
+        await waitFor(1500);
+        continue;
+      }
+
+      return;
     }
 
-    throw new Error("Timed out waiting for latest photo status to resolve.");
+    throw new Error(
+      expectedStatus
+        ? `Timed out waiting for latest photo status to resolve to ${expectedStatus}.`
+        : "Timed out waiting for latest photo status to resolve."
+    );
   }
 
   async getLatestPhotoStatus(): Promise<"accepted" | "rejected" | "unknown"> {

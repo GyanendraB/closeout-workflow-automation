@@ -5,12 +5,14 @@ export class LoginPage {
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
+  readonly loginErrorMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.usernameInput = page.getByPlaceholder(/Email address/);
     this.passwordInput = page.getByPlaceholder(/Password/);
     this.loginButton = page.getByRole("button", { name: /login|sign in/i });
+    this.loginErrorMessage = page.locator("span.text-danger");
   }
 
   async goto(): Promise<void> {

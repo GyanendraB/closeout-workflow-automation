@@ -22,9 +22,9 @@ npx playwright install
 
 ## Running Tests
 Run all test cases:
-```bash
+
 npm test
-```
+
 Run only UI test cases:
 ```bash
 npm run test:ui
