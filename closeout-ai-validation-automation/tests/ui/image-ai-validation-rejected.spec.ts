@@ -8,7 +8,7 @@ import { WorkflowPage } from "../../src/pages/workflow.page";
 import { getImageFiles } from "../../src/utils/image-validation-data";
 
 test.describe("Hardhat AI Validation Reject Folder Flow", () => {
-  test("rejects every image placed in the reject test-data folder", async ({ page }) => {
+  test("Image AI Validation Rejected", async ({ page }) => {
     test.setTimeout(10 * 60 * 1000);
     console.log("[Test] Starting reject-folder AI validation test");
 
@@ -44,3 +44,4 @@ test.describe("Hardhat AI Validation Reject Folder Flow", () => {
     }
   });
 });
+

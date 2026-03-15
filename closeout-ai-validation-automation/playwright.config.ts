@@ -23,9 +23,9 @@ export default defineConfig({
   use: {
     baseURL: env.baseUrl,
     viewport: null,
-    trace: "off",
-    screenshot: "only-on-failure",
-    video: "off"
+    trace: "retain-on-failure",
+    screenshot: "on",
+    video: "retain-on-failure"
   },
   projects: [
     {
@@ -40,3 +40,4 @@ export default defineConfig({
     }
   ]
 });
+

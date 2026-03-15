@@ -8,7 +8,7 @@ import { WorkflowPage } from "../../src/pages/workflow.page";
 import { getImageFiles } from "../../src/utils/image-validation-data";
 
 test.describe("Hardhat AI Validation Accept Folder Flow", () => {
-  test("accepts every image placed in the accept test-data folder", async ({ page }) => {
+  test("Image AI Validation Accepted", async ({ page }) => {
     test.setTimeout(10 * 60 * 1000);
     console.log("[Test] Starting accept-folder AI validation test");
 
@@ -44,3 +44,4 @@ test.describe("Hardhat AI Validation Accept Folder Flow", () => {
     }
   });
 });
+
