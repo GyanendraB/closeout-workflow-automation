@@ -52,6 +52,7 @@ export class ControlPanelPage {
   }
 
   private async scrollUntilVisible(target: Locator): Promise<void> {
+    // Project list uses page scroll, so keep scrolling until the target card appears.
     for (let attempt = 0; attempt < 20; attempt++) {
       if (await target.isVisible().catch(() => false)) {
         return;
@@ -65,6 +66,7 @@ export class ControlPanelPage {
   }
 
   private async scrollSiteContainerUntilVisible(target: Locator): Promise<void> {
+    // Site list has its own scroll container separate from the main page.
     for (let attempt = 0; attempt < 20; attempt++) {
       if (await target.isVisible().catch(() => false)) {
         return;

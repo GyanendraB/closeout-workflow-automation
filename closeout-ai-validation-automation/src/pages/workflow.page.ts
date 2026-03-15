@@ -79,6 +79,7 @@ export class WorkflowPage {
   async waitForLatestPhotoStatus(expectedStatus?: "accepted" | "rejected"): Promise<void> {
     console.log("[WorkflowPage] Waiting for latest photo status to resolve");
 
+    // The UI can briefly show an old or unstable status after upload, so wait for it to settle.
     let lastResolvedStatus: "accepted" | "rejected" | null = null;
 
     for (let attempt = 0; attempt < 50; attempt++) {
@@ -117,6 +118,7 @@ export class WorkflowPage {
     const latestPhotoCard = this.getLatestPhotoCard();
     console.log("[WorkflowPage] Reading latest uploaded photo status");
 
+    // Try icon-based status first because it is the most reliable signal in the card.
     const acceptedIcon = latestPhotoCard.locator("img[src*='icon-accepted.svg'], img[alt='accepted']").first();
     if (await acceptedIcon.isVisible().catch(() => false)) {
       return "accepted";

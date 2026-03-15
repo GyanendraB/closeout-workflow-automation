@@ -45,7 +45,10 @@ Vs Code
 ```bash
 Clone the project from git hub. 
 npm install
+
+cd .\closeout-ai-validation-automation
 npx playwright install
+
 ```
 
 ## Running Tests

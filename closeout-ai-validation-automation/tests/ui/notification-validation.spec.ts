@@ -8,7 +8,6 @@ import { NotificationsPage } from "../../src/pages/notifications.page";
 import { WorkflowPage } from "../../src/pages/workflow.page";
 import { getImageFiles } from "../../src/utils/image-validation-data";
 
-
 test.describe("Notification Validation", () => {
   test("Notification Validation", async ({ page }) => {
     test.setTimeout(10 * 60 * 1000);
@@ -25,6 +24,7 @@ test.describe("Notification Validation", () => {
     expect(imageFiles.length, "No images were found in test-data/images/reject.").toBeGreaterThan(0);
 
     await loginPage.loginToApplication(env.username, env.password);
+    // Start from a clean notification state so the new badge count is easy to validate.
     await notificationsPage.clearAllNotificationsIfPresent();
 
     await controlPanelPage.openControlPanel();
@@ -50,5 +50,3 @@ test.describe("Notification Validation", () => {
     await notificationsPage.clearAllNotificationsIfPresent();
   });
 });
-
-

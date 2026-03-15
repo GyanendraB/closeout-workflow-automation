@@ -1,5 +1,6 @@
 {
   "name": "closeout-task-solution",
+  "author": "Gyan",
   "private": true,
   "scripts": {
     "test": "npm --prefix closeout-ai-validation-automation test",

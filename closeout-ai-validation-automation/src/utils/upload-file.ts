@@ -7,6 +7,7 @@ export async function createUniqueUploadCopy(filePath: string): Promise<string> 
   const uploadDir = path.resolve(process.cwd(), "test-results", "upload-cache");
   const uniqueFileName = `${parsedFile.name}-${Date.now()}-${randomUUID()}${parsedFile.ext}`;
   const uniqueFilePath = path.join(uploadDir, uniqueFileName);
+  // Add a small unique marker so repeated uploads are treated as new files by the app.
   const uniqueMarker = `\ncloseout-upload-marker:${Date.now()}-${randomUUID()}`;
 
   await mkdir(uploadDir, { recursive: true });

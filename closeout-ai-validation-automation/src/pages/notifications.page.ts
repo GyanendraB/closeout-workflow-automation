@@ -37,6 +37,7 @@ export class NotificationsPage {
   }
 
   async clearAllNotificationsIfPresent(): Promise<void> {
+    // Try clearing twice because the tray and confirmation popup can be slow to update.
     for (let attempt = 0; attempt < 2; attempt++) {
       await this.openNotifications();
 
@@ -80,6 +81,7 @@ export class NotificationsPage {
   }
 
   async waitForNotificationCount(expectedCount: string): Promise<void> {
+    // Notification badge is delayed, so refresh and re-check a few times before failing.
     for (let attempt = 0; attempt < 5; attempt++) {
       await this.reloadAndWaitForPageReady();
 
@@ -104,6 +106,7 @@ export class NotificationsPage {
   }
 
   private async waitForPageReady(): Promise<void> {
+    // Wait for the navbar notification icon so the page is ready for the next action.
     await this.page.waitForLoadState("domcontentloaded");
     await this.page.waitForLoadState("load").catch(() => undefined);
     await this.page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => undefined);
