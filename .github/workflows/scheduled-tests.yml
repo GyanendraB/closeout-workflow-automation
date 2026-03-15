@@ -1,7 +1,7 @@
 name: Run Closeout Tests
 
 on:
-  # CI is temporarily disabled. Re-add triggers when you're ready to run in GitHub Actions.
+  # CI is temporarily disabled, this can be used as example if we want to run this on CI. 
   workflow_call:
 
 jobs:
