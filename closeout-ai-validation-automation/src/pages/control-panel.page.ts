@@ -59,7 +59,8 @@ export class ControlPanelPage {
       }
 
       await this.page.mouse.wheel(0, 900);
-      await this.page.waitForTimeout(150);
+      await target.waitFor({ state: "visible" });
+      
     }
 
     await target.waitFor({ state: "visible" });
@@ -75,7 +76,7 @@ export class ControlPanelPage {
       await this.siteListContainer.evaluate((element) => {
         element.scrollTop += 700;
       });
-      await this.page.waitForTimeout(150);
+      
     }
 
     await target.waitFor({ state: "visible" });
