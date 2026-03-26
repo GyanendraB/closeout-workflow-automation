@@ -1,9 +1,9 @@
-import { test, expect } from "../../src/fixtures/base.fixture"; // Use the base fixture with the login page.
+import { test, expect } from "../../src/fixtures/ui-auth.fixture"; // Use UI auth fixture for login helper.
 import { ControlPanelPage } from "../../src/pages/control-panel.page"; // Page object for control panel navigation.
 import { uiLoginTestData } from "../../test-data/payloads/ui-login-test-data"; // Test data for login scenarios.
 
 test.describe("Login UI", () => {
-  test("shows an error for invalid credentials and logs in with valid credentials", async ({ page, loginPage }) => {
+  test("shows an error for invalid credentials and logs in with valid credentials", async ({ page, loginPage, loginWithValidCredentials }) => {
     const controlPanelPage = new ControlPanelPage(page); // Instantiate the control panel page object.
 
     await test.step("Show unauthorized message for invalid credentials", async () => {
@@ -20,10 +20,7 @@ test.describe("Login UI", () => {
     });
 
     await test.step("Login successfully with valid credentials", async () => {
-      await loginPage.login(
-        uiLoginTestData.validCredentials.username, // Use valid username.
-        uiLoginTestData.validCredentials.password // Use valid password.
-      );
+      await loginWithValidCredentials(); // Log in using fixture helper.
 
       await expect(controlPanelPage.controlPanelMenu).toBeVisible(); // Control panel menu indicates login success.
       await expect(loginPage.loginErrorMessage).not.toBeVisible(); // Error message should no longer be shown.

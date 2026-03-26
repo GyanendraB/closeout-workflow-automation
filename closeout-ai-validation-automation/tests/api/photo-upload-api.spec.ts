@@ -1,12 +1,6 @@
-import { test, expect } from "@playwright/test"; // Playwright test runner and assertions.
-import { env } from "../../src/config/env"; // Environment settings for auth URL and credentials.
+import { test, expect } from "../../src/fixtures/auth.fixture"; // Use auth fixture to supply tokens.
+import { env } from "../../src/config/env"; // Environment settings for API base URL.
 import { apiTestData } from "../../test-data/payloads/api-test-data"; // Expected API payloads and responses.
-
-type AuthResponse = Array<{
-  tokens?: Array<{
-    access_token?: string; // Access token for authenticated requests.
-  }>;
-}>;
 
 type PlaceholderPhoto = {
   id: number; // Placeholder ID.
@@ -28,33 +22,16 @@ type PlaceholderPhoto = {
   placeholderItemType?: string; // Placeholder type string.
 };
 
-test("get placeholder photos", async ({ request }) => {
+test("get placeholder photos", async ({ request, authToken }) => {
   const payload = apiTestData.placeholderPhotos.requestPayload; // Request payload with filters.
 
-  let accessToken = env.accessToken; // Reuse a provided token if available.
-
-  if (!accessToken) {
-    const authResponse = await request.post(env.authUrl, {
-      data: {
-        username: env.username, // Username used for authentication.
-        password: env.password, // Password used for authentication.
-        deviceId: env.deviceId // Device identifier expected by auth API.
-      }
-    });
-
-    expect(authResponse.ok()).toBeTruthy(); // Ensure the auth call succeeded.
-
-    const authBody = (await authResponse.json()) as AuthResponse; // Parse the JSON body.
-    accessToken = authBody[0]?.tokens?.[0]?.access_token; // Extract the token.
-  }
-
-  expect(accessToken).toBeTruthy(); // Ensure we have a valid token.
+  expect(authToken).toBeTruthy(); // Ensure we have a valid token from the fixture.
 
   const response = await request.post(
     `${env.apiBaseUrl}control-panel/api/placeholders/photos`,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`, // Attach bearer token for auth.
+        Authorization: `Bearer ${authToken}`, // Attach bearer token for auth.
         "Content-Type": "application/json" // Explicit JSON content type.
       },
       data: payload // Payload filters for placeholder photos.

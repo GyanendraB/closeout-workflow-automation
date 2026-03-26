@@ -1,18 +1,15 @@
 import path from "path"; // Path helpers for resolving test data directories.
-import { expect, test } from "@playwright/test"; // Playwright test runner and assertions.
+import { expect, test } from "../../src/fixtures/ui-auth.fixture"; // Use UI auth fixture for login helper.
 import { CONTROL_PANEL_TEST_PROJECT_NUMBER, CONTROL_PANEL_TEST_SITE_NUMBER } from "../../src/config/constants"; // Configured test project/site identifiers.
-import { env } from "../../src/config/env"; // Environment variables for login.
 import { ControlPanelPage } from "../../src/pages/control-panel.page"; // Control panel navigation page object.
-import { LoginPage } from "../../src/pages/login.page"; // Login page object.
 import { NotificationsPage } from "../../src/pages/notifications.page"; // Notifications page object.
 import { WorkflowPage } from "../../src/pages/workflow.page"; // Workflow page object for photo uploads.
 import { getImageFiles } from "../../src/utils/image-validation-data"; // Helper to load image files from disk.
 
 test.describe("Notification Validation", () => {
-  test("Notification Validation", async ({ page }) => {
+  test("Notification Validation", async ({ page, loginWithValidCredentials }) => {
     test.setTimeout(10 * 60 * 1000); // Allow extra time for upload and notification processing.
 
-    const loginPage = new LoginPage(page); // Instantiate login page object.
     const controlPanelPage = new ControlPanelPage(page); // Instantiate control panel page object.
     const workflowPage = new WorkflowPage(page); // Instantiate workflow page object.
     const notificationsPage = new NotificationsPage(page); // Instantiate notifications page object.
@@ -23,7 +20,7 @@ test.describe("Notification Validation", () => {
 
     expect(imageFiles.length, "No images were found in test-data/images/reject.").toBeGreaterThan(0); // Ensure test data exists.
 
-    await loginPage.loginToApplication(env.username, env.password); // Log into the application.
+    await loginWithValidCredentials(); // Log into the application via fixture.
     // Start from a clean notification state so the new badge count is easy to validate.
     await notificationsPage.clearAllNotificationsIfPresent(); // Clear any existing notifications.
 

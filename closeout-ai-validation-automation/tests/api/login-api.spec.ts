@@ -22,7 +22,7 @@ test.describe("Login API", () => {
       }
     });
 
-    expect(response.ok()).toBeTruthy(); // Ensure the HTTP response is successful.
+    expect(response.status()).toBe(200); // Ensure the HTTP response is successful.
 
     const body = (await response.json()) as AuthResponse; // Parse the JSON body.
     expect(body[0]?.base_uri).toBe(apiTestData.login.expectedRegionBaseUri); // Validate base URI.
