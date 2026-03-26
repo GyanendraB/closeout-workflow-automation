@@ -1,47 +1,46 @@
-import path from "path";
-import { expect, test } from "@playwright/test";
-import { CONTROL_PANEL_TEST_PROJECT_NUMBER, CONTROL_PANEL_TEST_SITE_NUMBER } from "../../src/config/constants";
-import { env } from "../../src/config/env";
-import { ControlPanelPage } from "../../src/pages/control-panel.page";
-import { LoginPage } from "../../src/pages/login.page";
-import { WorkflowPage } from "../../src/pages/workflow.page";
-import { getImageFiles } from "../../src/utils/image-validation-data";
+import path from "path"; // Path helpers for resolving test data directories.
+import { expect, test } from "@playwright/test"; // Playwright test runner and assertions.
+import { CONTROL_PANEL_TEST_PROJECT_NUMBER, CONTROL_PANEL_TEST_SITE_NUMBER } from "../../src/config/constants"; // Configured test project/site identifiers.
+import { env } from "../../src/config/env"; // Environment variables for login.
+import { ControlPanelPage } from "../../src/pages/control-panel.page"; // Control panel navigation page object.
+import { LoginPage } from "../../src/pages/login.page"; // Login page object.
+import { WorkflowPage } from "../../src/pages/workflow.page"; // Workflow page object for photo uploads.
+import { getImageFiles } from "../../src/utils/image-validation-data"; // Helper to load image files from disk.
 
 test.describe("Hardhat AI Validation Accept Folder Flow", () => {
   test("Image AI Validation Accepted", async ({ page }) => {
-    test.setTimeout(10 * 60 * 1000);
-    console.log("[Test] Starting accept-folder AI validation test");
+    test.setTimeout(10 * 60 * 1000); // Allow extra time for multiple uploads and AI processing.
+    console.log("[Test] Starting accept-folder AI validation test"); // Log start for debugging.
 
-    const loginPage = new LoginPage(page);
-    const controlPanelPage = new ControlPanelPage(page);
-    const workflowPage = new WorkflowPage(page);
-    const imagesDirectory = path.resolve(__dirname, "../../test-data/images/accept");
-    const imageFiles = await getImageFiles(imagesDirectory);
-    const projectNumber = CONTROL_PANEL_TEST_PROJECT_NUMBER;
-    const siteNumber = CONTROL_PANEL_TEST_SITE_NUMBER;
+    const loginPage = new LoginPage(page); // Instantiate login page object.
+    const controlPanelPage = new ControlPanelPage(page); // Instantiate control panel page object.
+    const workflowPage = new WorkflowPage(page); // Instantiate workflow page object.
+    const imagesDirectory = path.resolve(__dirname, "../../test-data/images/accept"); // Resolve the accept images folder.
+    const imageFiles = await getImageFiles(imagesDirectory); // Load image file paths from disk.
+    const projectNumber = CONTROL_PANEL_TEST_PROJECT_NUMBER; // Use configured project number.
+    const siteNumber = CONTROL_PANEL_TEST_SITE_NUMBER; // Use configured site number.
 
-    expect(imageFiles.length, "No images were found in test-data/images/accept.").toBeGreaterThan(0);
+    expect(imageFiles.length, "No images were found in test-data/images/accept.").toBeGreaterThan(0); // Ensure test data exists.
 
-    await loginPage.loginToApplication(env.username, env.password);
-    await controlPanelPage.openControlPanel();
-    await controlPanelPage.openProjectAndSite(projectNumber, siteNumber);
-    await workflowPage.waitForTestPhotoReady();
+    await loginPage.loginToApplication(env.username, env.password); // Log into the application.
+    await controlPanelPage.openControlPanel(); // Navigate to the control panel.
+    await controlPanelPage.openProjectAndSite(projectNumber, siteNumber); // Open the project and site.
+    await workflowPage.waitForTestPhotoReady(); // Wait for the workflow to be ready.
 
     for (const imageFile of imageFiles) {
       await test.step(`Accept folder image: ${imageFile.fileName}`, async () => {
         await workflowPage.completePhotoUpload(
-          imageFile.filePath,
-          `Accept folder validation for ${imageFile.fileName} in Test Project ${projectNumber} and Test Site ${siteNumber}`
+          imageFile.filePath, // Upload the current image.
+          `Accept folder validation for ${imageFile.fileName} in Test Project ${projectNumber} and Test Site ${siteNumber}` // Add a descriptive comment.
         );
 
-        await workflowPage.waitForLatestPhotoStatus("accepted");
-        const actualStatus = await workflowPage.getLatestPhotoStatus();
+        await workflowPage.waitForLatestPhotoStatus("accepted"); // Wait for AI status to settle.
+        const actualStatus = await workflowPage.getLatestPhotoStatus(); // Read the status from the UI.
         expect.soft(
           actualStatus,
           `Image ${imageFile.fileName} in accept folder returned ${actualStatus} instead of accepted.`
-        ).toBe("accepted");
+        ).toBe("accepted"); // Soft-assert to continue testing other images.
       });
     }
   });
 });
-

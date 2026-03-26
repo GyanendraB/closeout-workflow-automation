@@ -1,7 +1,5 @@
 # Closeout Hardhat AI Validation Automation
-
 This project uses Playwright with TypeScript to validate the Closeout hardhat AI workflow and related API services. It includes 4 UI test cases and 3 API test cases.
-
 ## Test Cases
 ### UI
 1. Login test >>
@@ -12,7 +10,6 @@ Uploads images from the accept folder. It validates that the AI marks those imag
 Uploads images from the reject folder. It validates that the AI marks those images as rejected.
 4. Notification Validation >>
 Clears old notifications, uploads a reject image, and checks that a new notification badge appears. It also validates the notification time and clears the notification again.
-
 ### API
 1. Login API test
 Validates that the login API returns a successful response and auth token for valid credentials.
@@ -20,7 +17,6 @@ Validates that the login API returns a successful response and auth token for va
 Validates that the user account API returns the expected logged-in user details.
 3. Photo Upload API test
 Validates that the placeholder photo API returns photo records and expected status values.
-
 ## Project Structure
 - `src/pages`: page objects for login, control panel, project, site, and workflow navigation
 - `src/fixtures`: reusable Playwright fixtures
@@ -32,7 +28,6 @@ Validates that the placeholder photo API returns photo records and expected stat
 - `test-data/images/accept`: images that must be accepted by AI validation
 - `test-data/images/reject`: images that must be rejected by AI validation
 - `reports`: generated execution reports
-
 ## Setup and Run
 Requirements : 
 To run this project, you mainly need these: 
@@ -50,7 +45,6 @@ cd .\closeout-ai-validation-automation
 npx playwright install
 
 ```
-
 ## Running Tests
 1. Run all the test cases:
 ```bash
@@ -75,7 +69,6 @@ Specific UI test in headed mode:
 cd .\closeout-ai-validation-automation
 npx playwright test tests/ui/login-ui.spec.ts --headed
 ```
-
 ## Reports
 An HTML Playwright report is generated automatically after every execution in `reports/playwright-report`.
 Open the HTML report with:
@@ -84,16 +77,14 @@ npm run report
 npx playwright show-report reports\playwright-report
 ```
 Screenshots are saved for all test runs. Videos and traces are kept for failed tests in `test-results`.
-
 An Allure results folder is also generated automatically in `allure-results`.
 Serve the Allure report with:
 ```bash
-npm.cmd run clean:allure
+npm run clean:allure
 npm run test 
 npm run report:allure:generate
 allure open reports/allure-report
 ```
-
 ## Test Data Naming
 - Keep accepted images in `test-data/images/accept` using names like `accept-1.jpg`, `accept-2.jpg`
 - Keep rejected images in `test-data/images/reject` using names like `reject-1.jpg`, `reject-2.jpeg`
